@@ -30,3 +30,6 @@ domains:
 
 The domain specifies a number of hosts, each assigned a role in the topology.
 The type of domain is specific to a test.
+
+
+[upstream-ci]: https://github.com/freeipa/freeipa-ci
