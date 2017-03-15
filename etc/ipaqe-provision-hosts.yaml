@@ -1,0 +1,33 @@
+# The core key sets 
+core:
+    # Set up paths to staticly configured domains and hosts
+    static_domains: null
+    static_hosts: null
+
+domain_settings:
+    # All commented settings are as defaults used
+    # in freeipa integration tests. Override needed ones.
+    #
+    # 
+
+    # admin_name: admin
+    # admin_password: Secret123
+    # dirman_name: cn=Directory Manager
+    # dirman_password: Secret123
+    # nisdomain: ipatest
+    # ntp_server: 0.pool.ntp.org
+    # ad_admin_name: Administrator
+    # ad_admin_password: Secret123
+    # domain_level: 1
+    # dns_forwarder: set by backend
+    ssh_key: /path/to/private/ssh/key
+
+
+backend:
+    # Backend specific configuration
+    name: dummy
+    config:
+        url: http://example.com/api
+        username: demo
+        password: secret
+
