@@ -21,7 +21,7 @@ args = dict(
     name='idm-prepare-hosts',
     version=VERSION,
     author='FreeIPA QA',
-    author_email='ipa-and-samba-team-list@redhat.com',
+    author_email='mkubik@redhat.com',
     url='https://github.com/apophys/idm-prepare-hosts',
     description=(
         'Command line utility for FreeIPA multihost environment preparation'
