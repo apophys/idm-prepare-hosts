@@ -54,7 +54,7 @@ def main():
         if args.command == "create":
             create(args.topology, args.config, args.output)
         elif args.command == "delete":
-            delete()
+            delete(args.config)
     except IPAQEProvisionerError:
         # Backend exception should be handled by now
         sys.exit(1)
