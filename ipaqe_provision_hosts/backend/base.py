@@ -2,15 +2,10 @@
 
 NOT_IMPLEMENTED_MSG = "You need to override this method in a subclass"
 
-
-class IDMBackendException(Exception):
-    pass
+from ipaqe_provision_hosts.errors import IPAQEProvisionerError
 
 
-class VMsNotCreatedError(IDMBackendException):
-    pass
-
-class IDMBackendMissingName(IDMBackendException):
+class VMsNotCreatedError(IPAQEProvisionerError):
     pass
 
 
