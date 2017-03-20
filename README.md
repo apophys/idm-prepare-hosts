@@ -1,4 +1,4 @@
-# idm-prepare-hosts
+# ipaqe-provision-hosts
 Command line utility for FreeIPA multihost environment preparation
 
 A wrapper script to allow integration with FreeIPA upstream CI

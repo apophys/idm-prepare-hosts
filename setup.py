@@ -18,11 +18,11 @@ CLASSIFIERS = [
 VERSION = '0.0.1'
 
 args = dict(
-    name='idm-prepare-hosts',
+    name='ipaqe-provision-hosts',
     version=VERSION,
     author='FreeIPA QA',
     author_email='mkubik@redhat.com',
-    url='https://github.com/apophys/idm-prepare-hosts',
+    url='https://github.com/apophys/ipaqe-provision-hosts',
     description=(
         'Command line utility for FreeIPA multihost environment preparation'
     ),
