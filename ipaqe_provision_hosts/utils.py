@@ -4,6 +4,7 @@ import logging
 import yaml
 
 from ipaqe_provision_hosts.errors import IPAQEProvisionerError
+from ipaqe_provision_hosts import paths
 
 log = logging.getLogger(__name__)
 
@@ -30,10 +31,7 @@ def load_config(path=None):
     The configuration is loaded from the given path
     or from the default path in /etc.
     """
-
-    etc_path = '/etc/ipaqe-provision-hosts/config.yaml'
-
-    path = path or etc_path
+    path = path or paths.SYSTEM_CONFIG_PATH
 
     log.info("Loading configuration file %s", path)
     return load_yaml(path)
@@ -54,14 +52,14 @@ def get_os_version():
 
     try:
         log.debug('Reading os-release')
-        with open('/ect/os-release') as f:
+        with open(paths.OS_RELEASE) as f:
             os_release = dict([
                 line.strip().split('=') for line in f.readlines() if line
             ])
 
         return (os_release['ID'], os_release.get('VERSION_ID'))
     except IOError:
-        log.error('The file /etc/os-release was not found.')
+        log.error('The file %s was not found.', paths.OS_RELEASE)
         raise IPAQEProvisionerError
     except KeyError:
         log.error("The key ID of os-release was not found.")
