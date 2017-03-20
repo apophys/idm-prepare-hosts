@@ -1,0 +1,12 @@
+domains:
+  - hosts:
+      - name: master.ipa.test
+        role: master
+      - name: replica.ipa.test
+        role: replica
+      - name: replica.ipa.test
+        role: replica
+      - name: replica.ipa.test
+        role: replica
+    name: ipa.test
+    type: IPA
