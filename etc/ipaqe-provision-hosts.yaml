@@ -1,8 +1,7 @@
 # The core key sets 
 core:
-    # Set up paths to staticly configured domains and hosts
-    static_domains: null
-    static_hosts: null
+    # Set up path to staticly configured domains and hosts
+    static_resources: null
 
 domain_settings:
     # All commented settings are as defaults used
