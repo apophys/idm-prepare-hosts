@@ -54,10 +54,16 @@ def get_os_version():
         log.debug('Reading os-release')
         with open(paths.OS_RELEASE) as f:
             os_release = dict([
-                line.strip().split('=') for line in f.readlines() if line
+                line.strip().split('=')
+                for line in f.readlines() if line.strip()
             ])
+        os_id, os_ver = os_release['ID'], os_release.get('VERSION_ID')
+        if os_ver:
+            log.debug("Detected OS %s %s", os_id, os_ver)
+        else:
+            log.debug("Detected OS %s", os_id)
 
-        return (os_release['ID'], os_release.get('VERSION_ID'))
+        return os_id, os_ver
     except IOError:
         log.error('The file %s was not found.', paths.OS_RELEASE)
         raise IPAQEProvisionerError
