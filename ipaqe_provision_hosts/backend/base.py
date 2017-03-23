@@ -1,11 +1,17 @@
 # author: Milan Kubik
+""" Backend base class
 
-NOT_IMPLEMENTED_MSG = "You need to override this method in a subclass"
+The class provides the contract for backend modules
+implementing the provisioning of dynamic resources.
+"""
 
 from ipaqe_provision_hosts.errors import IPAQEProvisionerError
 
+NOT_IMPLEMENTED_MSG = "You need to override this method in a subclass"
+
 
 class VMsNotCreatedError(IPAQEProvisionerError):
+    """Raise in case VMs could not be provisioned"""
     pass
 
 
