@@ -9,8 +9,9 @@ log = logging.getLogger(__name__)
 
 class DummyBackend(IDMBackendBase):
 
-    def __init__(self, config):
+    def __init__(self, config=None):
         log.debug("Instantiating DummyBackend")
+        super(DummyBackend, self).__init__(config)
 
     def provision_resources(self, n):
         log.debug("Generating %d dummy hosts", n)
