@@ -2,6 +2,10 @@
 core:
     # Set up path to staticly configured domains and hosts
     static_resources: null
+    # os_version is a tuple with os-release values for
+    # ID and ID_VERSION
+    # if ID_VERSION is unavailable, use null value
+    os_version: ['fedora', '25']
 
 domain_settings:
     # All commented settings are as defaults used
@@ -19,7 +23,7 @@ domain_settings:
     # ad_admin_password: Secret123
     # domain_level: 1
     # dns_forwarder: set by backend
-    ssh_key: /path/to/private/ssh/key
+    root_ssh_key_filename: /path/to/private/ssh/key
 
 
 backend:
