@@ -48,7 +48,7 @@ def main():
             logging.basicConfig(level=loglevel)
 
     log = logging.getLogger(__name__)
-    log.debug('Setting log level to {}'.format(logging.getLevelName(loglevel)))
+    log.debug('Setting log level to %s', logging.getLevelName(loglevel))
 
     try:
         if args.command == "create":
