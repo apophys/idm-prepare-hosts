@@ -56,9 +56,8 @@ def create(topology, config, output):
         # Instantiate the TopologyManager
         inventory = TopologyInventory(backend, static_inventory)
 
-        dns_forwarder, provisioned_domains = (
+        provisioned_domains = (
             inventory.provision_topology(topology_template))
-        config['domain_settings']['dns_forwarder'] = dns_forwarder
 
         multihost_config = {}
 

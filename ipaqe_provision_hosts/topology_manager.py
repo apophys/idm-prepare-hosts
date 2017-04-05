@@ -78,8 +78,6 @@ class TopologyInventory(object):
         try:
             backend_data = (
                 self._dynamic_backend.provision_resources(required_hosts))
-            dns_forwarder = backend_data['dns']
-            log.debug("Backends DNS forwarder is %s", dns_forwarder)
             host_pool = backend_data['hosts']
         except (KeyError, TypeError) as e:
             log.error("Malformed data from the backend.\n%s", e)
@@ -97,7 +95,7 @@ class TopologyInventory(object):
             self._assign_hosts_to_domain(domain, dom_hosts)
             provisioned_domains.append(domain)
 
-        return dns_forwarder, provisioned_domains
+        return provisioned_domains
 
     def _process_non_managed_domain(self, domain):
         log.debug("Processing domain of type %s", domain['type'])
