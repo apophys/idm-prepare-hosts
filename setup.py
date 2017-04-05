@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from setuptools import setup
+from setuptools import setup, find_packages
 import io
 
 
@@ -30,7 +30,7 @@ args = dict(
     license='MIT',
     classifiers=CLASSIFIERS,
 
-    packages=['ipaqe_provision_hosts'],
+    packages=find_packages(),
     install_requires=[
         'PyYAML'
     ],
