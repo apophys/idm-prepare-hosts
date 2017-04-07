@@ -1,4 +1,4 @@
-# The core key sets 
+# The core key settings 
 core:
     # Set up path to staticly configured domains and hosts
     static_resources: null
@@ -29,6 +29,7 @@ domain_settings:
 backend:
     # Backend specific configuration
     name: dummy
+    # The actual configuration is backend specific
     config:
         url: http://example.com/api
         username: demo
