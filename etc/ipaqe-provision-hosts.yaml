@@ -22,7 +22,7 @@ domain_settings:
     # ad_admin_name: Administrator
     # ad_admin_password: Secret123
     # domain_level: 1
-    # dns_forwarder: set by backend
+    # dns_forwarder: 8.8.8.8
     root_ssh_key_filename: /path/to/private/ssh/key
 
 
