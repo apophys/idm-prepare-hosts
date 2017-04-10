@@ -16,7 +16,6 @@ class DummyBackend(IDMBackendBase):
     def provision_resources(self, n):
         log.debug("Generating %d dummy hosts", n)
         data = {
-            'dns': '8.8.8.8',
             'hosts': [
                 {
                     'name':
@@ -27,6 +26,8 @@ class DummyBackend(IDMBackendBase):
                 for i in range(n)
             ]
         }
+
+        self._vms = data
 
         return data
 
