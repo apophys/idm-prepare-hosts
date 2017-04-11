@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
 from setuptools import setup, find_packages
-import io
 
+LONG_DESCRIPTION = """
+The script reads a topology template specifying a domain for
+the ipa installation and creating a configuration file for
+the multihost tests with the provisioned resources.
+"""
 
-with io.open("README.md") as f:
-    long_description = f.read()
 
 CLASSIFIERS = [
     'Intended Audience :: Developers',
@@ -15,7 +17,7 @@ CLASSIFIERS = [
     'Topic :: Utilities'
 ]
 
-VERSION = '0.0.1'
+VERSION = '0.1.0'
 
 args = dict(
     name='ipaqe-provision-hosts',
@@ -26,11 +28,11 @@ args = dict(
     description=(
         'Command line utility for FreeIPA multihost environment preparation'
     ),
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     license='MIT',
     classifiers=CLASSIFIERS,
 
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests']),
     install_requires=[
         'PyYAML'
     ],
