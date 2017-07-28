@@ -10,12 +10,13 @@ RESOURCE_GROUP = "ipaqe_provision_hosts.backends"
 log = logging.getLogger(__name__)
 
 
-def load_backends(exclude=()):
+def load_backends(exclude=(), logger=None):
     """Load all registered modules"""
-    log.debug("Loading entry points from %s.", RESOURCE_GROUP)
+    _log = logger or log
+    _log.debug("Loading entry points from %s.", RESOURCE_GROUP)
     entry_points = {
         ep.name: ep.load() for ep in iter_entry_points(RESOURCE_GROUP)
         if ep.name not in exclude
     }
-    log.debug("Loaded entry points: %s", entry_points.keys())
+    _log.debug("Loaded entry points: %s", entry_points.keys())
     return entry_points

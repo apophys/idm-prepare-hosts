@@ -25,14 +25,15 @@ class TopologyInventory(object):
     MANAGED_DOMAINS = ('IPA',)
     MANAGED_ROLES = ('master', 'replica', 'client', 'other')
 
-    def __init__(self, dynamic_backend, static_inventory=None):
-        log.debug("Initializing TopologyInventory")
+    def __init__(self, dynamic_backend, static_inventory=None, logger=None):
+        self._log = logger or log
+        self._log.debug("Initializing TopologyInventory")
         self._dynamic_backend = dynamic_backend
         if not isinstance(self._dynamic_backend, IDMBackendBase):
             raise TopologyInventoryError(
                 "Cannot create inventory, %r is not an instance of %r",
                 dynamic_backend, IDMBackendBase)
-        log.debug("Using backend %r", dynamic_backend.__class__)
+        self._log.debug("Using backend %r", dynamic_backend.__class__)
 
         self._static_inventory = static_inventory or StaticInventory()
         if not isinstance(self._static_inventory, StaticInventory):
@@ -57,64 +58,66 @@ class TopologyInventory(object):
 
         dynamic_domains_to_process = []
 
-        log.debug("Processing the topology template")
+        self._log.debug("Processing the topology template")
         for domain in topology_template['domains']:
-            log.debug('Found domain of type %s', domain['type'])
+            self._log.debug('Found domain of type %s', domain['type'])
             if domain['type'] in self.MANAGED_DOMAINS:
-                log.debug('Managed domain %s of type %s found, adding to queue',
-                          domain['name'], domain['type'])
+                self._log.debug(
+                    'Managed domain %s of type %s found, adding to queue',
+                    domain['name'], domain['type'])
                 dynamic_domains_to_process.append(domain)
             else:
-                log.debug("Processing unmanaged domain %s", domain['type'])
+                self._log.debug("Processing unmanaged domain %s",
+                                domain['type'])
                 d = self._process_non_managed_domain(domain)
                 provisioned_domains.append(d)
 
         # Count hosts required for managed domains
         required_hosts = sum(
             len(domain['hosts']) for domain in dynamic_domains_to_process)
-        log.debug("Requesting %d hosts from the dynamic backend.",
-                  required_hosts)
+        self._log.debug("Requesting %d hosts from the dynamic backend.",
+                        required_hosts)
 
         try:
             backend_data = (
                 self._dynamic_backend.provision_resources(required_hosts))
             host_pool = backend_data['hosts']
         except (KeyError, TypeError) as e:
-            log.error("Malformed data from the backend.\n%s", e)
+            self._log.error("Malformed data from the backend.\n%s", e)
             raise errors.IPAQEProvisionerError
 
         self._validate_domain_hint(host_pool)
 
-        log.debug("Processing managed domains")
+        self._log.debug("Processing managed domains")
         for domain in dynamic_domains_to_process:
             dom_hosts_count = len(domain['hosts'])
             dom_hosts = host_pool[:dom_hosts_count]
             host_pool = host_pool[dom_hosts_count:]
 
-            log.debug("Assigning hosts to domain %s", domain['name'])
+            self._log.debug("Assigning hosts to domain %s", domain['name'])
             self._assign_hosts_to_domain(domain, dom_hosts)
             provisioned_domains.append(domain)
 
         return provisioned_domains
 
     def _process_non_managed_domain(self, domain):
-        log.debug("Processing domain of type %s", domain['type'])
+        self._log.debug("Processing domain of type %s", domain['type'])
         dom = self._static_inventory.lookup_domain(domain['type'])
         dom['hosts'] = []
 
-        log.debug("Processing %d hosts in the domain",
-                  len(domain['hosts']))
+        self._log.debug("Processing %d hosts in the domain",
+                        len(domain['hosts']))
         for host in domain['hosts']:
             if host['role'] in self.MANAGED_ROLES:
-                log.error("Static domains can only be composed"
-                          " of statically defined resources.")
+                self._log.error("Static domains can only be composed"
+                                " of statically defined resources.")
                 raise TopologyInventoryError
             else:
                 try:
                     h = self._static_inventory.lookup_host(host['role'])
                     dom['hosts'].append(h)
                 except UnknownHostDomainError:
-                    log.error(
+                    self._log.error(
                         "Host of role %s was not found "
                         "in static inventory",
                         host['role'])
@@ -122,19 +125,17 @@ class TopologyInventory(object):
 
         return dom
 
-    @staticmethod
-    def _validate_domain_hint(hosts):
-        log.debug("Validating domain_hint for hosts")
+    def _validate_domain_hint(self, hosts):
+        self._log.debug("Validating domain_hint for hosts")
         if not all('domain_hint' in host for host in hosts):
-            log.error("Not all dynamically provisioned hosts "
-                      "provide domain hint value.")
+            self._log.error("Not all dynamically provisioned hosts "
+                            "provide domain hint value.")
             raise TopologyInventoryError
 
-    @staticmethod
-    def _assign_hosts_to_domain(domain, hosts):
+    def _assign_hosts_to_domain(self, domain, hosts):
         for dom_host in domain['hosts']:
             dom_host.update(hosts.pop())
             if dom_host['role'] == 'master':
                 domain['name'] = dom_host['domain_hint']
-                log.debug("Assigning domain a name %s", domain['name'])
+                self._log.debug("Assigning domain a name %s", domain['name'])
             dom_host.pop('domain_hint')
